@@ -5,10 +5,9 @@ app = Flask(__name__)
  
 @app.route('/')
 def home():
-    return "hi!"
-  #return render_template('home.html')
+    return render_template('login.html')
 
-@app.route("/dankmemes")
+@app.route("/dashboard", methods=['POST'])
 def lol():
     return "DANK MEMESSS"
  
