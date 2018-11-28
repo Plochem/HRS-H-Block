@@ -7,14 +7,17 @@
     <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
 </head>
 <body>
-    <form action="/dashboard" method="post" role="form">
+
+        <p>{{ message }}</p>
+
+    <form action="/login" method="post" role="form">
         <label for="email">Email:</label>
-        <input type="text" class="form-control" id="email" name="email">
+        <input type="text" id="email" name="email">
         <br>
         <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password" name="password">
+        <input type="password" id="password" name="password">
         <br>
-    <button type="submit">Login</button>
+        <button type="submit">Login</button>
     </form>
 </body>
 </html>
