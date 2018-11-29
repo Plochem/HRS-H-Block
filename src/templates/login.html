@@ -1,15 +1,31 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en">
+    <style type="text/css">
+    body{
+        font-size:12pt;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-areas:
+    "head head head"
+    "side pic pic"
+    "shadow shadow shadow";
+  }
+    }
+
+
+    </style>
 <head>
     <meta charset="utf-8" />
     <title>Login Page</title>
     <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
 </head>
 <body>
-
+    <div id="header">
+        <img src="../img/HRlogo.png">
+    </div>
         <p>{{ message }}</p>
-
     <form action="/" method="post" role="form">
         <label for="email">Email:</label>
         <input type="text" id="email" name="email">
