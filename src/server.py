@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, render_template, request, session, redirect, url_for, escape
+from flask import Flask, render_template, request, session, redirect, escape
 app = Flask(__name__)
 app.secret_key = 'idk_what_this_is'
 
