@@ -33,14 +33,14 @@ def login():
 
 @app.route('/classes')
 def classes():
-    if 'email' in session:
+    if 'email' in session: # checks if session exists (user is logged in)
         return render_template('classes.html', email = session['email'])
     else:
         return redirect('/')
 
 @app.route('/logout')
 def logout():
-    session.pop('email', None)
+    session.pop('email', None) # deletes current session
     return redirect('/')
  
 if __name__ == '__main__':
