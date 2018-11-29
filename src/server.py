@@ -1,7 +1,7 @@
 import flask
-from flask import Flask, render_template, request, redirect
-
+from flask import Flask, render_template, request, session, redirect, url_for, escape
 app = Flask(__name__)
+app.secret_key = 'idk_what_this_is'
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -21,17 +21,27 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-
+    
+        session['email'] = email
         if email == 'root' and password == 'pass': # make it check with DB
-            # return dashboard that lists classes
             return redirect('/classes') 
+        if email == 'admin' and password == 'admin':
+            return redirect('/classes')
         else:
             message = "Wrong username or password"
     return render_template('login.html', message=message)
 
 @app.route('/classes')
 def classes():
-    return render_template('classes.html')
+    if 'email' in session:
+        return render_template('classes.html', email = session['email'])
+    else:
+        return redirect('/')
+
+@app.route('/logout')
+def logout():
+    session.pop('email', None)
+    return redirect('/')
  
 if __name__ == '__main__':
   app.run(debug=True)
