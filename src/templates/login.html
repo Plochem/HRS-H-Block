@@ -1,7 +1,4 @@
-﻿
-<!DOCTYPE html>
-
-<!-- ToDo link the database w/ html to recieve classes http://jinja.pocoo.org/docs/2.10/templates/ , what JS do I need?-->
+﻿<!DOCTYPE html>
 
 <html lang="en">
     <style type="text/css">
@@ -12,21 +9,24 @@
         display: grid;
         grid-template-areas:
         "head head head"
-        "side login pic"
-        "bottom bottom bottom";
+        "side pic pic"
+        "shadow shadow shadow";
     }
     #header{
         grid-area: head;
         background: linear-gradient(to right, rgba(57, 255, 31, 0.36), rgb(50, 112, 25), #055802);
     }
-    #login{
-        grid-area: login;
-    }
+    
     </style>
+<head>
+    <meta charset="utf-8" />
+    <title>Login Page</title>
+    <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
+</head>
+<body>
     <div id="header">
         <img src="../img/HRlogo.png">
     </div>
-    <div id="login">
         <p>{{ message }}</p>
     <form action="/" method="post" role="form">
         <label for="email">Email:</label>
@@ -37,10 +37,5 @@
         <br>
         <button type="submit">Login</button>
     </form>
-    <a href="https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7"> Mindbody H-Block</a>
-    </div>
-    <div id="bottom">
-        <!-- What do y'all want to put @ the bottom? HRS address, date/time, shameless plugs? we can fill this in @ end-->
-    </div>
 </body>
 </html>
