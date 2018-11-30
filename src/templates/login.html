@@ -1,23 +1,22 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en">
-    <style type="text/css">
-    body{
-        font-size:12pt;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-areas:
-        "head head head"
-        "side pic pic"
-        "shadow shadow shadow";
-    }
-    #header{
-        grid-area: head;
-        background: linear-gradient(to right, rgba(57, 255, 31, 0.36), rgb(50, 112, 25), #055802);
-    }
-    
-    </style>
+<style type="text/css">
+body{
+    font-size:12pt;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-areas:
+    "head head head"
+    "side pic pic"
+    "shadow shadow shadow";
+}
+#header{
+    grid-area: head;
+    background: linear-gradient(to right, rgba(57, 255, 31, 0.36), rgb(50, 112, 25), #055802);
+}
+
+</style>
 <head>
     <meta charset="utf-8" />
     <title>Login Page</title>
@@ -25,7 +24,7 @@
 </head>
 <body>
     <div id="header">
-        <img src="../img/HRlogo.jpg">
+        <img src="../static/HRlogo.jpg" alt = "oof"/>
     </div>
         <p>{{ message }}</p>
     <form action="/" method="post" role="form">
