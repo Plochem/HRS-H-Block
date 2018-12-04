@@ -11,13 +11,14 @@ app.config['MYSQL_DATABASE_DB'] = 'server_2290'
 app.config['MYSQL_DATABASE_HOST'] = '172.106.202.143'
 mysql.init_app(app)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;doesn't exist</b>"
 
 @app.errorhandler(405)
 def method_not_allowed(e):
-    return "you&nbsp;thought"
+    return redirect('/')
  
 @app.route('/')
 def home():
@@ -49,6 +50,13 @@ def classes():
         return render_template('classes.html', email = session['email'], data = data)
     else:
         return redirect('/')
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    if request.method == 'POST':
+        classID = request.form.get('class_id')
+        print(str(classID)) # prints out the class id you sign up for
+        return redirect('/classes')
 
 @app.route('/logout')
 def logout():
