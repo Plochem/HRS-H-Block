@@ -1,7 +1,15 @@
 import flask
 from flask import Flask, render_template, request, session, redirect, escape
+from flaskext.mysql import MySQL
+
 app = Flask(__name__)
+mysql = MySQL()
 app.secret_key = 'idk_what_this_is'
+app.config['MYSQL_DATABASE_USER'] = 'server_2290'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Gf134!oijfdF45Dm34l!'
+app.config['MYSQL_DATABASE_DB'] = 'server_2290'
+app.config['MYSQL_DATABASE_HOST'] = '172.106.202.143'
+mysql.init_app(app)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -34,7 +42,11 @@ def login():
 @app.route('/classes')
 def classes():
     if 'email' in session: # checks if session exists (user is logged in)
-        return render_template('classes.html', email = session['email'])
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM server_2290.classes")
+        data = cursor.fetchall()
+        return render_template('classes.html', email = session['email'], data = data)
     else:
         return redirect('/')
 
