@@ -12,9 +12,12 @@
     <a href="/logout">LOGOUT</a><br>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
     {% for row in data %}
+        {% for col in row%}
       <tr>
-         <td>{{ row[0] }} | {{ row[1] }}</td><br>
+         <td>{{ col }} | </td>
       </tr>
+        {% endfor %}
+        <br>
     {% endfor %}
 </body>
 </html>
