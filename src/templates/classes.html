@@ -18,16 +18,19 @@
     <p>{{ email }}</p>
     <a href="/logout">LOGOUT</a><br>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
+    <ul>
     {% for id in range(data | length) %}
+        <li>
+        {% for col in data[id]%}
+
+                <span> {{ col }} | </span>
+        {% endfor %}
+        </li>
         <form action="/signup" method="post" role="form">
             <button type="submit" name = "class_id" value = {{ id }}>Signup</button>
         </form>
-        {% for col in data[id]%}
-            <tr>
-                <td> {{ col }} | </td>
-            </tr>
-        {% endfor %}
         <br>
     {% endfor %}
+    </ul>
 </body>
 </html>
