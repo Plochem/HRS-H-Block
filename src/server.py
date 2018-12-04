@@ -56,6 +56,7 @@ def signup():
     if request.method == 'POST':
         classID = request.form.get('class_id')
         print(str(classID)) # prints out the class id you sign up for
+        # could use it to know which class to add in DB
         return redirect('/classes')
 
 @app.route('/logout')
