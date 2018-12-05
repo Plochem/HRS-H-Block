@@ -50,6 +50,17 @@ def classes():
         return render_template('classes.html', email = session['email'], data = data)
     else:
         return redirect('/')
+        
+@app.route('/manage')
+def add_class():
+    if session['admin'] == True:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM server_2290.classes")
+        data = cursor.fetchall()
+        return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;doesn't exist</b>"
+        #return render_template('manageClasses.html',data = data)
+        #admins should be able to view classes and add/remove classes from this page
 
 @app.route('/signup', methods=['POST'])
 def signup():
