@@ -68,6 +68,10 @@ def add_class():
 def signup():
     if request.method == 'POST':
         classID = request.form.get('class_id')
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM server_2290.classes")
+        data = cursor.fetchall()
         print(str(classID)) # prints out the class id you sign up for
         # could use it to know which class to add in DB
         return redirect('/classes')
