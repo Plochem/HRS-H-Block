@@ -14,13 +14,13 @@
     <ul>
     {% for id in range(data | length) %}
         <li>
-        {% for col in data[id]%}
-
-                <span> {{ col }} | </span>
-        {% endfor %}
+                <span> Class: {{ data[id][1] }} </span>
+        <!---{% for col in data[id]%}
+                <span> Class" {{ col }} | </span>
+        {% endfor %}-->
         </li>
         <form action="/signup" method="post" role="form">
-            <button type="submit" name = "class_id" value = {{ id }}>Signup</button>
+            <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
         </form>
         <br>
     {% endfor %}
