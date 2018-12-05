@@ -33,9 +33,11 @@ def login():
     
         session['email'] = email
         if email == 'root' and password == 'pass': # make it check with DB
+            session['admin'] = False
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
-            return redirect('/classes')
+            session['admin'] = True
+            return redirect('/manage')
         else:
             message = "Wrong username or password"
     return render_template('login.html', message=message)
@@ -50,7 +52,7 @@ def classes():
         return render_template('classes.html', email = session['email'], data = data)
     else:
         return redirect('/')
-        
+
 @app.route('/manage')
 def add_class():
     if session['admin'] == True:
