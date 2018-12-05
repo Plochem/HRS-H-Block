@@ -33,7 +33,6 @@ def login():
     
         session['email'] = email
         if email == 'root' and password == 'pass': # make it check with DB
-            session['admin'] = False
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
             session['admin'] = True
