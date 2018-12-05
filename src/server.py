@@ -35,7 +35,8 @@ def login():
         if email == 'root' and password == 'pass': # make it check with DB
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
-            return redirect('/classes')
+            session['admin'] = True
+            return redirect('/manage')
         else:
             message = "Wrong username or password"
     return render_template('login.html', message=message)
@@ -53,14 +54,17 @@ def classes():
         
 @app.route('/manage')
 def add_class():
-    if session['admin'] == True:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM server_2290.classes")
-        data = cursor.fetchall()
-        return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;doesn't exist</b>"
-        #return render_template('manageClasses.html',data = data)
-        #admins should be able to view classes and add/remove classes from this page
+    if 'admin' in session:
+        if session['admin'] == True:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM server_2290.classes")
+            data = cursor.fetchall()
+            return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;EXISTS FE*IRFPHJFIPHENSJ/b>"
+            #return render_template('manageClasses.html',data = data)
+            #admins should be able to view classes and add/remove classes from this page
+    else:
+        return redirect('/') # todo: redirect to page person came from
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -69,14 +73,14 @@ def signup():
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM server_2290.classes")
-        data = cursor.fetchall()
-        print(str(classID)) # prints out the class id you sign up for
+        data = cursor.fetchall() # prints out the class id you sign up for
         # could use it to know which class to add in DB
         return redirect('/classes')
 
 @app.route('/logout')
 def logout():
     session.pop('email', None) # deletes current session
+    session.pop('admin', None)
     return redirect('/')
  
 if __name__ == '__main__':
