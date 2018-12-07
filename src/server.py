@@ -55,7 +55,7 @@ def classes():
 @app.route('/manage')
 def add_class():
     if 'admin' in session:
-        if session['admin'] == True:
+        if session['admin'] is True:
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM server_2290.classes")
@@ -63,6 +63,8 @@ def add_class():
             return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;EXISTS FE*IRFPHJFIPHENSJ/b>"
             #return render_template('manageClasses.html',data = data)
             #admins should be able to view classes and add/remove classes from this page
+        else:
+            return redirect('/')
     else:
         return redirect('/') # todo: redirect to page person came from
 
@@ -72,10 +74,18 @@ def signup():
         classID = request.form.get('class_id')
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM server_2290.classes")
-        data = cursor.fetchall() # prints out the class id you sign up for
-        # could use it to know which class to add in DB
-        return redirect('/classes')
+        cursor.execute("SELECT numSignedUp FROM server_2290.classes WHERE id = " + str(classID))
+        print(classID) # if someone inspects element, they can change the val of button which will affect the classID
+        numSignedUp = cursor.fetchone()[0] # prints out the class id you sign up for
+        studentCol = "student" + str(numSignedUp+1)
+        cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if there is a col for student
+        result = cursor.fetchone()
+        if result is not None: # column exists
+            print(result[0])
+        else:
+            print("oof")
+            #alter table create
+    return redirect('/classes')
 
 @app.route('/logout')
 def logout():
