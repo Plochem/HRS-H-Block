@@ -9,14 +9,19 @@ body{
     display: grid;
     grid-template-areas:
     "head head head"
-    "side pic pic"
-    "shadow shadow shadow";
+    "side login login";
 }
 #header{
     grid-area: head;
-    background: linear-gradient(to right, rgba(57, 255, 31, 0.36), rgb(50, 112, 25), #055802);
+    padding-top: 2%;
+    padding-left: 2%;
 }
-
+#login{
+    grid-area: login;
+}
+#bottom{
+    grid-area:bott;
+}
 </style>
 <head>
     <meta charset="utf-8" />
@@ -27,8 +32,9 @@ body{
     <div id="header">
         <img src="../static/HRlogo.jpg" alt = "oof"/>
     </div>
-        <p>{{ message }}</p>
-    <form action="/" method="post" role="form">
+    <div id="login">
+        <p id = "msg">{{ message }}</p>
+    <form action="/" method="post" role="form" onsubmit="emailCheck()">
         <label for="email">Email:</label>
         <input type="text" id="email" name="email">
         <br>
@@ -37,5 +43,18 @@ body{
         <br>
         <button type="submit">Login</button>
     </form>
+    </div>
+    <!--<div id="bottom">
+            <a href="https://clients.mindbodyonline.com/classic/mainclass"> Real H-Block </a>
+    </div>-->
 </body>
+<script> 
+//checking if its a real email (if it has an @ and .) b/c its quicker than check w/server
+    function emailCheck(){
+        if (!(email.indexOf("@") > -1) || !(email.indexOf(".") > -1)){
+            event.preventDefault();
+            document.getElementById("msg").innerHTML = "Invalid Email input"
+        }
+    }
+</script>
 </html>
