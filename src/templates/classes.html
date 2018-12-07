@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 
 <html lang="en">
+<style type="text/css">
+
+</style>
 <head>
     <meta charset="utf-8" />
     <title>Classes</title>
     <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
+
+    <style type='text/css'>
+    
+    span.courseDescription{
+        display: hidden;
+        position:absolute;
+    }
+    div.course:hover > span.courseDescription{
+        display: block;
+    }
+    </style>
 </head>
 <body>
     <p>list classes</p>
@@ -14,7 +28,11 @@
     <ul>
     {% for id in range(data | length) %}
         <li>
-                <span> Class: {{ data[id][1] }} </span>
+
+            <div class='course'>
+                <span class='courseTitle'> Class: {{ data[id][1] }} </span>
+                <span class='courseDescription'>COURSE DESCRIPTION</span>
+            </div>
         <!---{% for col in data[id]%}
                 <span> Class" {{ col }} | </span>
         {% endfor %}-->
