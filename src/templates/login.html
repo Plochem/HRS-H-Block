@@ -9,12 +9,14 @@ body{
     display: grid;
     grid-template-areas:
     "head head head"
-    "side pic pic"
-    "shadow shadow shadow";
+    "side login login";
 }
 #header{
     grid-area: head;
     background: linear-gradient(to right, rgba(57, 255, 31, 0.36), rgb(50, 112, 25), #055802);
+}
+#login{
+    grid-area: login;
 }
 
 </style>
@@ -27,8 +29,9 @@ body{
     <div id="header">
         <img src="../static/HRlogo.jpg" alt = "oof"/>
     </div>
-        <p>{{ message }}</p>
-    <form action="/" method="post" role="form">
+    <div id="login">
+        <p id = "msg">{{ message }}</p>
+    <form action="/" method="post" role="form" onsubmit="emailCheck()">
         <label for="email">Email:</label>
         <input type="text" id="email" name="email">
         <br>
@@ -37,5 +40,14 @@ body{
         <br>
         <button type="submit">Login</button>
     </form>
+    </div>
 </body>
+<script>
+    function emailCheck(){
+        if (!(email.indexOf("@") > -1) || !(email.indexOf(".") > -1)){
+            event.preventDefault();
+            document.getElementById("msg").innerHTML = "Invalid Email input"
+        }
+    }
+</script>
 </html>
