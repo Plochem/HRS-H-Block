@@ -25,14 +25,14 @@
     <a href="/logout">LOGOUT</a><br>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
     <ul>
-    {% for id in range(data | length) %}
+    {% for id in range(classes | length) %}
         <li>
 
             <div class='course'>
-                <span class='courseTitle'> Class: {{ data[id][1] }} </span>
+                <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
                 <span class='courseDescription'>COURSE DESCRIPTION</span>
             </div>
-        <!---{% for col in data[id]%}
+        <!---{% for col in classes[id]%}
                 <span> Class" {{ col }} | </span>
         {% endfor %}-->
         </li>
