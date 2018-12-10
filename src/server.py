@@ -80,13 +80,15 @@ def signup():
         studentCol = "student" + str(numSignedUp+1)
         cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if studentCol exists
         result = cursor.fetchone()
-        print(studentCol)
-        print(result[0])
+        newStudentCol = "student" + str(numSignedUp+2)
+
         if result is None: # column doesn't exist, then add column
-            cursor.execute("ALTER TABLE server_2290.classes ADD COLUMN '" + studentCol + "' VARCHAR(50) NULL AFTER '" + studentCol + "'")
-            print("")
-            #alter table create
-        
+            cursor.execute("ALTER TABLE server_2290.classes ADD COLUMN '" + newStudentCol + "' VARCHAR(50) NULL AFTER '" + studentCol + "'")
+            cursor.execute("INSERT INTO server_2290.classes (" + newStudentCol +") VALUES ('" + session['email'] + "') WHERE id=" + str(classID))
+        else:
+            print("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = '" + str(classID) + "'")
+            cursor.execute("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
+
     return redirect('/classes')
 
 @app.route('/logout')
