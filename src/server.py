@@ -48,7 +48,7 @@ def classes():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM server_2290.classes")
         data = cursor.fetchall()
-        return render_template('classes.html', email = session['email'], data = data)
+        return render_template('classes.html', email = session['email'], classes = data)
     else:
         return redirect('/')
 
@@ -78,13 +78,15 @@ def signup():
         print(classID) # if someone inspects element, they can change the val of button which will affect the classID
         numSignedUp = cursor.fetchone()[0] # prints out the class id you sign up for
         studentCol = "student" + str(numSignedUp+1)
-        cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if there is a col for student
+        cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if studentCol exists
         result = cursor.fetchone()
-        if result is not None: # column exists
-            print(result[0])
-        else:
-            print("oof")
+        print(studentCol)
+        print(result[0])
+        if result is None: # column doesn't exist, then add column
+            cursor.execute("ALTER TABLE server_2290.classes ADD COLUMN '" + studentCol + "' VARCHAR(50) NULL AFTER '" + studentCol + "'")
+            print("")
             #alter table create
+        
     return redirect('/classes')
 
 @app.route('/logout')
