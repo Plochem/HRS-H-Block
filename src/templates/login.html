@@ -19,18 +19,19 @@ body{
 }
 #login{
     grid-area: login;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 #bottom{
     grid-area:bott;
 }
 label{
-    display: inline-block;
-    clear: left;
-    width: 250px;
-    text-align: right;
+    text-align: left;
 }
 input {
-  display: inline-block;
+    width: 20%%;
 }
 </style>
 <head>
@@ -45,10 +46,12 @@ input {
     <div id="login">
         <p id = "msg">{{ message }}</p>
     <form action="/" method="post" role="form" onsubmit="emailCheck()">
-        <label for="email">Email:</label>
+        <label for="email">Email</label>
+        <br>
         <input type="text" id="email" name="email">
         <br>
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
+        <br>
         <input type="password" id="password" name="password">
         <br>
         <button type="submit">Login</button>
