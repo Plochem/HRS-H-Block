@@ -68,29 +68,34 @@ def add_class():
     else:
         return redirect('/') # todo: redirect to page person came from
 
-@app.route('/signup', methods=['POST'])
+@app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST':
-        classID = request.form.get('class_id')
+        classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT numSignedUp FROM server_2290.classes WHERE id = " + str(classID))
-        print(classID) # if someone inspects element, they can change the val of button which will affect the classID
-        numSignedUp = cursor.fetchone()[0] # prints out the class id you sign up for
+        cursor.execute("SELECT numSignedUp,maxCapacity FROM server_2290.classes WHERE id = " + str(classID))
+        data = cursor.fetchone()
+        numSignedUp = data[0] # get current number signed up
+        maxCapacity = data[1] # get max amount of students 
+
+        cursor.execute("SELECT * FROM server_2290.classes") # fetch class table so i can print out the list of the classes
+        data = cursor.fetchall()
+
+        if numSignedUp >= maxCapacity:
+            return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
+
         studentCol = "student" + str(numSignedUp+1)
         cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if studentCol exists
         result = cursor.fetchone()
+
         if result is None: # column doesn't exist, then add column
             prevStudentCol = "student" + str(numSignedUp)
             cursor.execute("ALTER TABLE server_2290.classes ADD COLUMN " + studentCol + " VARCHAR(50) NULL AFTER " + prevStudentCol)
-            cursor.execute("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
-            cursor.execute("UPDATE server_2290.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
-            conn.commit()
-        else:
-            cursor.execute("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
-            cursor.execute("UPDATE server_2290.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
-            conn.commit()
-    return redirect('/classes')
+        cursor.execute("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
+        cursor.execute("UPDATE server_2290.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
+        conn.commit()
+    return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
 
 @app.route('/logout')
 def logout():
