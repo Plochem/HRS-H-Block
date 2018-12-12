@@ -24,6 +24,7 @@
     <p>{{ email }}</p>
     <a href="/logout">LOGOUT</a><br>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
+    <p id = "msg">{{ message }}</p>
     <ul>
     {% for id in range(classes | length) %}
         <li>
@@ -36,7 +37,7 @@
                 <span> Class" {{ col }} | </span>
         {% endfor %}-->
         </li>
-        <form action="/signup" method="post" role="form">
+        <form action="/classes" method="post" role="form">
             <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
         </form>
         <br>
