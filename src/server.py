@@ -82,7 +82,7 @@ def signup():
         cursor.execute("SELECT * FROM server_2290.classes") # fetch class table so i can print out the list of the classes
         data = cursor.fetchall()
 
-        if numSignedUp >= maxCapacity:
+        if numSignedUp >= maxCapacity: # checks if the class is full
             return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
 
         studentCol = "student" + str(numSignedUp+1)
