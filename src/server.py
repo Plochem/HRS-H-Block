@@ -60,13 +60,13 @@ def add_class():
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM server_2290.classes")
             data = cursor.fetchall()
-            return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;EXISTS FE*IRFPHJFIPHENSJ/b>"
+            return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;Welcome to the admin page!/b>"
             #return render_template('manageClasses.html',data = data)
             #admins should be able to view classes and add/remove classes from this page
         else:
-            return redirect('/')
+            return redirect('/classes')
     else:
-        return redirect('/') # todo: redirect to page last redirected to(request.headers.get('Referer') does not work if a person types'/manage')
+        return redirect('/classes') # todo: redirect saying the user does not have permission to view the page with a button to go back to classes
 
 @app.route('/classes', methods=['POST'])
 def signup():
