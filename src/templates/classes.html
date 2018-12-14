@@ -8,7 +8,13 @@
     <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
 
     <style type='text/css'>
-    
+    body{
+        display: grid;
+        grid-template-areas: 
+        "head mid log"
+        "cl cl cl";
+        grid-template-columns: 40% 40% 20%;
+    }
     span.courseDescription{
         display: none;
         position:absolute;
@@ -16,16 +22,37 @@
     div.course:hover > span.courseDescription{
         display: block;
     }
+    #header{
+    grid-area: head;
+    padding-top: 2%;
+    padding-left: 2%;
+}
+    #log{
+        grid-area:log;    
+    }
+    #classes{
+        grid-area: cl;
+    }
+    img{
+        max-width: 100%;
+        height: auto;
+        width: auto;
+    }
     </style>
 </head>
 
 <body>
-    <p>list classes</p>
-    <p>{{ email }}</p>
-    <a href="/logout">LOGOUT</a><br>
+    <div id="header">
+        <img src="../static/HRlogo.jpg" alt = "oof"/>
+    </div>
+    <div id="log">
+        <a href="/logout">LOGOUT</a>
+        <br>
+        {{ email }}
+    </div>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
-    <p id = "msg">{{ message }}</p>
-    <ul>
+    <ul id="classes">
+        <span id = "msg">{{ message }}</span>
     {% for id in range(classes | length) %}
         <li>
 
