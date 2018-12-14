@@ -66,7 +66,7 @@ def add_class():
         else:
             return redirect('/')
     else:
-        return redirect('/') # todo: redirect to page person came from
+        return redirect('/') # todo: redirect to page last redirected to(request.headers.get('Referer') does not work if a person types'/manage')
 
 @app.route('/classes', methods=['POST'])
 def signup():
