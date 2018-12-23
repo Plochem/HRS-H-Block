@@ -8,13 +8,7 @@
     <link rel="icon" href="https://i0.kym-cdn.com/photos/images/original/000/934/550/6cf.png">
 
     <style type='text/css'>
-    body{
-        display: grid;
-        grid-template-areas: 
-        "head mid log"
-        "cl cl cl";
-        grid-template-columns: 40% 40% 20%;
-    }
+    
     span.courseDescription{
         display: none;
         position:absolute;
@@ -22,37 +16,16 @@
     div.course:hover > span.courseDescription{
         display: block;
     }
-    #header{
-    grid-area: head;
-    padding-top: 2%;
-    padding-left: 2%;
-}
-    #log{
-        grid-area:log;    
-    }
-    #classes{
-        grid-area: cl;
-    }
-    img{
-        max-width: 100%;
-        height: auto;
-        width: auto;
-    }
     </style>
 </head>
 
 <body>
-    <div id="header">
-        <img src="../static/HRlogo.jpg" alt = "oof"/>
-    </div>
-    <div id="log">
-        <a href="/logout">LOGOUT</a>
-        <br>
-        {{ email }}
-    </div>
+    <p>list classes</p>
+    <p>{{ email }}</p>
+    <a href="/logout">LOGOUT</a><br>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
-    <ul id="classes">
-        <span id = "msg">{{ message }}</span>
+    <p id = "msg">{{ message }}</p>
+    <ul>
     {% for id in range(classes | length) %}
         <li>
 
@@ -60,9 +33,7 @@
                 <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
                 <span class='courseDescription'>COURSE DESCRIPTION</span>
             </div>
-        <!---{% for col in classes[id]%}
-                <span> Class" {{ col }} | </span>
-        {% endfor %}-->
+
         </li>
         <form action="/classes" method="post" role="form">
             <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
