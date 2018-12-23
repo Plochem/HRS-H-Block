@@ -1,6 +1,7 @@
 import flask
 from flask import Flask, render_template, request, session, redirect, escape
 from flaskext.mysql import MySQL
+from datetime import timedelta
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -9,6 +10,7 @@ app.config['MYSQL_DATABASE_USER'] = 'server_2290'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Gf134!oijfdF45Dm34l!'
 app.config['MYSQL_DATABASE_DB'] = 'server_2290'
 app.config['MYSQL_DATABASE_HOST'] = '172.106.202.143'
+app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 mysql.init_app(app)
 
 
@@ -30,11 +32,14 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-    
-        session['email'] = email
+
         if email == 'root' and password == 'pass': # make it check with DB
+            session.permanent = True
+            session['email'] = email
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
+            session.permanent = True
+            session['email'] = email
             session['admin'] = True
             return redirect('/manage')
         else:
