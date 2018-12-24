@@ -6,10 +6,10 @@ from datetime import timedelta
 app = Flask(__name__)
 mysql = MySQL()
 app.secret_key = 'idk_what_this_is'
-app.config['MYSQL_DATABASE_USER'] = 'server_2290'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Gf134!oijfdF45Dm34l!'
-app.config['MYSQL_DATABASE_DB'] = 'server_2290'
-app.config['MYSQL_DATABASE_HOST'] = '172.106.202.143'
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
+app.config['MYSQL_DATABASE_DB'] = 'H-Block'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 mysql.init_app(app)
 
