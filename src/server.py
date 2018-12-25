@@ -53,7 +53,6 @@ def classes():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM sys.classes")
         data = cursor.fetchall()
-        print(data)
         return render_template('classes.html', email = session['email'], classes = data)
     else:
         return redirect('/')
@@ -101,7 +100,12 @@ def signup():
         cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
         cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
         conn.commit()
-    return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
+    return redirect('/success')
+    #return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
+
+@app.route('/success')
+def success():
+    return '<b>good job</b>'
 
 @app.route('/logout')
 def logout():
