@@ -8,7 +8,7 @@ mysql = MySQL()
 app.secret_key = 'idk_what_this_is'
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
-app.config['MYSQL_DATABASE_DB'] = 'H-Block'
+app.config['MYSQL_DATABASE_DB'] = 'sys'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 mysql.init_app(app)
@@ -51,8 +51,9 @@ def classes():
     if 'email' in session: # checks if session exists (user is logged in)
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM server_2290.classes")
+        cursor.execute("SELECT * FROM sys.classes")
         data = cursor.fetchall()
+        print(data)
         return render_template('classes.html', email = session['email'], classes = data)
     else:
         return redirect('/')
@@ -63,7 +64,7 @@ def add_class():
         if session['admin'] is True:
             conn = mysql.connect()
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM server_2290.classes")
+            cursor.execute("SELECT * FROM sys.classes")
             data = cursor.fetchall()
             return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;Welcome to the admin page!/b>"
             #return render_template('manageClasses.html',data = data)
@@ -79,26 +80,26 @@ def signup():
         classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT numSignedUp,maxCapacity FROM server_2290.classes WHERE id = " + str(classID))
+        cursor.execute("SELECT numSignedUp,maxCapacity FROM sys.classes WHERE id = " + str(classID))
         data = cursor.fetchone()
         numSignedUp = data[0] # get current number signed up
         maxCapacity = data[1] # get max amount of students 
 
-        cursor.execute("SELECT * FROM server_2290.classes") # fetch class table so i can print out the list of the classes
+        cursor.execute("SELECT * FROM sys.classes") # fetch class table so i can print out the list of the classes
         data = cursor.fetchall()
 
         if numSignedUp >= maxCapacity: # checks if the class is full
             return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
 
         studentCol = "student" + str(numSignedUp+1)
-        cursor.execute("SHOW COLUMNS FROM server_2290.classes LIKE '" + studentCol + "'") # check if studentCol exists
+        cursor.execute("SHOW COLUMNS FROM sys.classes LIKE '" + studentCol + "'") # check if studentCol exists
         result = cursor.fetchone()
 
         if result is None: # column doesn't exist, then add column
             prevStudentCol = "student" + str(numSignedUp)
-            cursor.execute("ALTER TABLE server_2290.classes ADD COLUMN " + studentCol + " VARCHAR(50) NULL AFTER " + prevStudentCol)
-        cursor.execute("UPDATE server_2290.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
-        cursor.execute("UPDATE server_2290.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
+            cursor.execute("ALTER TABLE sys.classes ADD COLUMN " + studentCol + " VARCHAR(50) NULL AFTER " + prevStudentCol)
+        cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
+        cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
         conn.commit()
     return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
 
@@ -109,4 +110,9 @@ def logout():
     return redirect('/')
  
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS `sys`.`classes` (`id` INT NOT NULL,`name` VARCHAR(45) NULL,`description` VARCHAR(100) NULL,`numSignedUp` INT NULL,`maxCapacity` INT NULL,`teacher1` VARCHAR(50) NULL,`student1` VARCHAR(50) NULL, PRIMARY KEY (`id`))")
+    cursor.execute("CREATE TABLE IF NOT EXISTS `sys`.`users` (`id` INT NOT NULL,`email` VARCHAR(45) NULL,`password` VARCHAR(100) NULL, `classSignedUp` VARCHAR(45) NULL, PRIMARY KEY (`id`))")
+    conn.commit()
