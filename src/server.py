@@ -59,7 +59,7 @@ def classes():
 
 @app.route('/manage')
 def add_class():
-    if 'admin' in session:
+    if 'admin' in session and 'email' in session:
         if session['admin'] is True:
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -75,7 +75,7 @@ def add_class():
 
 @app.route('/classes', methods=['POST'])
 def signup():
-    if request.method == 'POST':
+    if request.method == 'POST' and 'email' in session:
         classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -100,7 +100,7 @@ def signup():
         cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
         cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
         conn.commit()
-    return redirect('/success')
+        return redirect('/success')
     #return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
 
 @app.route('/success')
