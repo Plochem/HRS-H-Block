@@ -36,9 +36,15 @@
             </div>
 
         </li>
+        {% if email in classes[id] %}
+        <form action="/cancel" method="post" role="form">
+            <button type="submit" name = "class_id" value = {{ id }}>Cancel</button>
+        </form>
+        {% else %}
         <form action="/classes" method="post" role="form">
             <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
         </form>
+        {% endif %}
         <br>
     {% endfor %}
     </ul>
