@@ -23,7 +23,7 @@ def method_not_allowed(e):
     return redirect('/')
  
 @app.route('/')
-def home():
+def home(): # home page
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
@@ -77,35 +77,55 @@ def add_class():
 def signup():
     if request.method == 'POST' and 'email' in session:
         classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT numSignedUp,maxCapacity FROM sys.classes WHERE id = " + str(classID))
-        data = cursor.fetchone()
-        numSignedUp = data[0] # get current number signed up
-        maxCapacity = data[1] # get max amount of students 
+        classIDCancel = request.form.get('class_id_cancel')
+        if classID is None and classIDCancel is not None: # person is canceling a class
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM sys.classes WHERE id = " + str(classIDCancel))
+            currClass = cursor.fetchone()
+            if currClass is None:
+                return render_template('classes.html', message="A class with an id of " + str(classIDCancel) + " does not exist", email = session['email'], classes=data)
+            if session['email'] not in currClass:
+                return render_template('classes.html', message="You cannot cancel a class that you are not signed up for", email = session['email'], classes=data)
+            
+            return
+        else:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT numSignedUp,maxCapacity FROM sys.classes WHERE id = " + str(classID))
+            data = cursor.fetchone()
+            if data is None:
+                return render_template('classes.html', message="A class with an id of " + str(classID) + " does not exist", email = session['email'], classes=data)
+            numSignedUp = data[0] # get current number signed up
+            maxCapacity = data[1] # get max amount of students 
 
-        cursor.execute("SELECT * FROM sys.classes") # fetch class table so i can print out the list of the classes
-        data = cursor.fetchall()
+            cursor.execute("SELECT * FROM sys.classes") # fetch class table so i can print out the list of the classes
+            data = cursor.fetchall()
 
-        if numSignedUp >= maxCapacity: # checks if the class is full
-            return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
+            if numSignedUp >= maxCapacity: # checks if the class is full
+                return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
+            if session['email'] in data[classID]: # checks if the student is already signed up for that class
+                return render_template('classes.html', message="You already signed up for that class", email = session['email'], classes=data)
 
-        studentCol = "student" + str(numSignedUp+1)
-        cursor.execute("SHOW COLUMNS FROM sys.classes LIKE '" + studentCol + "'") # check if studentCol exists
-        result = cursor.fetchone()
+            studentCol = "student" + str(numSignedUp+1)
+            cursor.execute("SHOW COLUMNS FROM sys.classes LIKE '" + studentCol + "'") # Attempts to get studentCol
+            result = cursor.fetchone()
 
-        if result is None: # column doesn't exist, then add column
-            prevStudentCol = "student" + str(numSignedUp)
-            cursor.execute("ALTER TABLE sys.classes ADD COLUMN " + studentCol + " VARCHAR(50) NULL AFTER " + prevStudentCol)
-        cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
-        cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
-        conn.commit()
-        return redirect('/success')
-    #return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
+            if result is None: # if column doesn't exist, then add new column for student
+                prevStudentCol = "student" + str(numSignedUp)
+                cursor.execute("ALTER TABLE sys.classes ADD COLUMN " + studentCol + " VARCHAR(50) NULL AFTER " + prevStudentCol)
 
-@app.route('/success')
-def success():
-    return '<b>good job</b>'
+            cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + classID)
+            cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + classID)
+            conn.commit()
+            return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
+    else:
+        return redirect('/')
+
+@app.route('/done')
+def done():
+    return '<b>good job</b><a href="/classes"> Back to classes </a>'
+
 
 @app.route('/logout')
 def logout():
