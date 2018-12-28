@@ -55,7 +55,7 @@ def classes():
         data = cursor.fetchall()
         return render_template('classes.html', email = session['email'], classes = data)
     else:
-        return redirect('/')
+        return render_template('error.html')
 
 @app.route('/manage')
 def add_class():
@@ -71,7 +71,7 @@ def add_class():
         else:
             return redirect('/classes')
     else:
-        return redirect('/classes') # todo: redirect saying the user does not have permission to view the page with a button to go back to classes
+        return render_template('error.html')
 
 @app.route('/classes', methods=['POST'])
 def signup():
@@ -130,7 +130,7 @@ def signup():
             conn.commit()
             return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
     else:
-        return redirect('/')
+        return render_template('error.html')
 
 @app.route('/done')
 def done():
