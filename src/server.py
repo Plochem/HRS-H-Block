@@ -2,6 +2,7 @@ import flask
 from flask import Flask, render_template, request, session, redirect, escape
 from flaskext.mysql import MySQL
 from datetime import timedelta
+import string
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -91,13 +92,35 @@ def signup():
                 return render_template('classes.html', message="A class with an id of " + str(classIDCancel) + " does not exist", email = session['email'], classes=data)
             if session['email'] not in currClass: # checks if the person is in the class
                 return render_template('classes.html', message="You cannot cancel a class that you are not signed up for", email = session['email'], classes=data)
+            
             cursor.execute("SHOW COLUMNS FROM sys.classes LIKE 'student%'") # gets all the columns that start with "student"
             columns = cursor.fetchall()
-           
-           ################## gets values from each column name where row id = classIDCancel. find email corresponds to which column. remove that value. move values on right left by one
+            
+            shiftLeft = False
+            for column in columns:
+                cursor.execute("SELECT " + column[0] + " FROM sys.classes WHERE id=" + str(classIDCancel)) # column[0] gets the name of the current column
+                selectedEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
+                currStudentNum = int(column[0].replace("student", ""))
+                if shiftLeft is False:
+                    print(currStudentNum)
+                    print(session['email'] + " = " + selectedEmail)
+                    if session['email'] == selectedEmail:
+                        print("dsfuhidsfshdfsdhiofshdofhdsf")
+                        shiftLeft = True
+                        cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
+                        nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
+                        print(nextEmail)
+                        cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
+                        conn.commit()
+                else:
+                    cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
+                    nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
+                    cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
+                    conn.commit()
 
             #cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(currClass[3]-1) + " WHERE id = " + str(classIDCancel)) # currClass[3] hold the current number of students signed up
             #conn.commit()
+            shiftLeft = False
             return render_template('classes.html', message="You successfully canceled a class", email = session['email'], classes=data)
         else: # person is signing up for a class
             classID = int(classID)
@@ -131,11 +154,6 @@ def signup():
             return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
     else:
         return render_template('error.html')
-
-@app.route('/done')
-def done():
-    return '<b>good job</b><a href="/classes"> Back to classes </a>'
-
 
 @app.route('/logout')
 def logout():
