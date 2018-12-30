@@ -102,24 +102,32 @@ def signup():
                 selectedEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
                 currStudentNum = int(column[0].replace("student", ""))
                 if shiftLeft is False:
-                    print(currStudentNum)
-                    print(session['email'] + " = " + selectedEmail)
                     if session['email'] == selectedEmail:
-                        print("dsfuhidsfshdfsdhiofshdofhdsf")
                         shiftLeft = True
+                        if currStudentNum == currClass[3]: #  check if at last column
+                            cursor.execute("UPDATE sys.classes SET " + column[0] +"= NULL WHERE id = " + str(classIDCancel))
+                            conn.commit()
+                            break
+                        else:
+                            cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
+                            nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
+                            cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
+                            print("setting " + column[0] + " to " + nextEmail)
+                            conn.commit()
+                else:
+                    if currStudentNum == currClass[3]: #  check if at last column
+                        cursor.execute("UPDATE sys.classes SET " + column[0] +"= NULL WHERE id = " + str(classIDCancel))
+                        conn.commit()
+                        break
+                    else:
                         cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
                         nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
-                        print(nextEmail)
                         cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
+                        print("setting " + column[0] + " to " + nextEmail)
                         conn.commit()
-                else:
-                    cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
-                    nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
-                    cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
-                    conn.commit()
 
-            #cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(currClass[3]-1) + " WHERE id = " + str(classIDCancel)) # currClass[3] hold the current number of students signed up
-            #conn.commit()
+            cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(currClass[3]-1) + " WHERE id = " + str(classIDCancel)) # currClass[3] hold the current number of students signed up
+            conn.commit()
             shiftLeft = False
             return render_template('classes.html', message="You successfully canceled a class", email = session['email'], classes=data)
         else: # person is signing up for a class
