@@ -77,7 +77,7 @@ def add_class():
 @app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST' and 'email' in session:
-        classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID
+        classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID, but does that really matter b/c they will just sign up for another class
         classIDCancel = request.form.get('class_id_cancel')
         if classID is None and classIDCancel is not None: # person is canceling a class
             classIDCancel = int(classIDCancel)
@@ -89,9 +89,9 @@ def signup():
             data = cursor.fetchall()
 
             if currClass is None: # checks if selected class is not valid
-                return render_template('classes.html', message="A class with an id of " + str(classIDCancel) + " does not exist", email = session['email'], classes=data)
+                return render_template('classes.html', message="A class with an id of " + str(classIDCancel) + " does not exist.", email = session['email'], classes=data)
             if session['email'] not in currClass: # checks if the person is in the class
-                return render_template('classes.html', message="You cannot cancel a class that you are not signed up for", email = session['email'], classes=data)
+                return render_template('classes.html', message="You cannot cancel a class that you are not signed up for.", email = session['email'], classes=data)
             
             cursor.execute("SHOW COLUMNS FROM sys.classes LIKE 'student%'") # gets all the columns that start with "student"
             columns = cursor.fetchall()
@@ -104,17 +104,8 @@ def signup():
                 if shiftLeft is False:
                     if session['email'] == selectedEmail:
                         shiftLeft = True
-                        if currStudentNum == currClass[3]: #  check if at last column
-                            cursor.execute("UPDATE sys.classes SET " + column[0] +"= NULL WHERE id = " + str(classIDCancel))
-                            conn.commit()
-                            break
-                        else:
-                            cursor.execute("SELECT student" + str(currStudentNum+1) + " FROM sys.classes WHERE id=" + str(classIDCancel))
-                            nextEmail = cursor.fetchone()[0] # without the [0], it returns a tuple and not just one string
-                            cursor.execute("UPDATE sys.classes SET " + column[0] +"='" + nextEmail + "' WHERE id = " + str(classIDCancel))
-                            print("setting " + column[0] + " to " + nextEmail)
-                            conn.commit()
-                else:
+
+                if shiftLeft is True:
                     if currStudentNum == currClass[3]: #  check if at last column
                         cursor.execute("UPDATE sys.classes SET " + column[0] +"= NULL WHERE id = " + str(classIDCancel))
                         conn.commit()
@@ -129,7 +120,9 @@ def signup():
             cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(currClass[3]-1) + " WHERE id = " + str(classIDCancel)) # currClass[3] hold the current number of students signed up
             conn.commit()
             shiftLeft = False
-            return render_template('classes.html', message="You successfully canceled a class", email = session['email'], classes=data)
+            cursor.execute("SELECT * FROM sys.classes") # fetch class table with updated values
+            data = cursor.fetchall()
+            return render_template('classes.html', message="You successfully canceled that class.", email = session['email'], classes=data)
         else: # person is signing up for a class
             classID = int(classID)
             conn = mysql.connect()
@@ -139,14 +132,18 @@ def signup():
             cursor.execute("SELECT * FROM sys.classes") # fetch class table so i can print out the list of the classes
             data = cursor.fetchall()
             if currClass is None:
-                return render_template('classes.html', message="A class with an id of " + str(classID) + " does not exist", email = session['email'], classes=data)
+                return render_template('classes.html', message="A class with an id of " + str(classID) + " does not exist.", email = session['email'], classes=data)
             numSignedUp = currClass[0] # get current number signed up
             maxCapacity = currClass[1] # get max amount of students
 
             if numSignedUp >= maxCapacity: # checks if the class is full
-                return render_template('classes.html', message="That class is full", email = session['email'], classes=data)
-            if session['email'] in data[classID]: # checks if the student is already signed up for that class
-                return render_template('classes.html', message="You already signed up for that class", email = session['email'], classes=data)
+                return render_template('classes.html', message="That class is currently full.", email = session['email'], classes=data)
+            
+            cursor.execute("SELECT COUNT(*) FROM sys.classes") # gets number of classes
+            numOfClasses = int(cursor.fetchone()[0]) # without the [0], it returns a tuple and not just one string
+            for i in range(numOfClasses):
+                if session['email'] in data[i]: # checks if the student is already signed up for that class
+                    return render_template('classes.html', message="You already signed up for another class.", email = session['email'], classes=data)
 
             studentCol = "student" + str(numSignedUp+1)
             cursor.execute("SHOW COLUMNS FROM sys.classes LIKE '" + studentCol + "'") # Attempts to get studentCol
@@ -159,7 +156,9 @@ def signup():
             cursor.execute("UPDATE sys.classes SET " + studentCol +"='" + session['email'] + "' WHERE id = " + str(classID))
             cursor.execute("UPDATE sys.classes SET numSignedUp =" + str(numSignedUp+1) + " WHERE id = " + str(classID))
             conn.commit()
-            return render_template('classes.html', message="Successfully signed up!", email = session['email'], classes=data)
+            cursor.execute("SELECT * FROM sys.classes") # fetch class table with updated values
+            data = cursor.fetchall()
+            return render_template('classes.html', message="You have successfully signed up.", email = session['email'], classes=data)
     else:
         return render_template('error.html')
 
