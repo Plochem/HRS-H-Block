@@ -52,7 +52,7 @@ def classes():
     else:
         return redirect('/')
 
-@app.route('/manage')
+@app.route('/manage')#todo: allow admin to add classes to the database
 def add_class():
     if 'admin' in session:
         if session['admin'] is True:
