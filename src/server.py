@@ -58,7 +58,7 @@ def classes():
     else:
         return render_template('error.html')
 
-@app.route('/manage')
+@app.route('/manage')#todo: allow admin to add classes to the database
 def add_class():
     if 'admin' in session and 'email' in session:
         if session['admin'] is True:
