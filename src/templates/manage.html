@@ -33,9 +33,10 @@
                 <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
                 <span class='courseStatus'>Number of students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
                 <p> Location: {{ classes[id][5] }} </p>
-                {% for col in range (7,classes[id] | length) %}
+                <p>Names:</p>
+                {% for col in range(7, classes[id] | length) %}
                 <div class='students'>
-                    <span class='name'> Name: {{classes[id][col]}} </span>
+                    <span class='name'> {{classes[id][col]}} </span>
                 </div>
                 {% endfor %}
             </div>
