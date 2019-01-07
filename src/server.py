@@ -15,18 +15,22 @@ mysql.init_app(app)
 
 
 @app.errorhandler(404)
+#O(1) 
 def page_not_found(e):
     return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;doesn't exist</b>"
 
 @app.errorhandler(405)
+#O(1) 
 def method_not_allowed(e):
     return redirect('/')
- 
+
 @app.route('/')
+#O(1) 
 def home(): # home page
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
+#O(1)
 def login():
     message = ''
     if request.method == 'POST':
@@ -47,6 +51,7 @@ def login():
     return render_template('login.html', message=message)
 
 @app.route('/classes')
+#O(1)
 def classes():
     if 'email' in session: # checks if session exists (user is logged in)
         conn = mysql.connect()
@@ -58,6 +63,7 @@ def classes():
         return render_template('error.html')
 
 @app.route('/manage')#todo: allow admin to add classes to the database
+#O(1) 
 def Admin_Page():
     if 'admin' in session and 'email' in session:
         if session['admin'] is True:
@@ -72,6 +78,7 @@ def Admin_Page():
     else:
         return render_template('error.html')
 @app.route('/manage', methods = ['POST'])
+#O(1) 
 def manage():
     if session['admin'] is True:
         if request.method == 'POST':
