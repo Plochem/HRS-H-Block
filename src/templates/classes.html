@@ -42,16 +42,12 @@
 </head>
 
 <body>
-        <p>list classes</p>
-        <p>{{ email }}</p>
-        <a href="/logout">LOGOUT</a><br>
         <div id="header">
             <img src="../static/HRlogo.jpg" alt = "oof"/>
         </div>
         <div id="log">
             <a href="/logout">LOGOUT</a>
-            <br>
-            {{ email }}
+            <p>{{ email }}</p>
         </div>
         <!--Each row has multiple columns. row[0] accesses the first column of that row-->
         <p id = "msg">{{ message }}</p>
