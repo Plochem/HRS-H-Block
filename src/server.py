@@ -3,6 +3,8 @@ from flask import Flask, render_template, request, session, redirect, escape
 from flaskext.mysql import MySQL
 from datetime import timedelta
 import string
+from LinkedList import LinkedList
+from node import node
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -27,6 +29,12 @@ def method_not_allowed(e):
 @app.route('/')
 #O(1) 
 def home(): # home page
+    linkedlist = LinkedList()
+    linkedlist.add(node(None, None, "yeet"))
+    linkedlist.add(node(None, None, "yote"))
+    linkedlist.add(node(None, None, "yote3432"))
+    linkedlist.remove("yote")
+    linkedlist.prnt()
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
@@ -89,9 +97,9 @@ def manage():
             Teacher = request.form.get('teacher')
             conn = mysql.connect()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES (" + ClassName + "," +  Description + ", '0', " +  ClassSize + ", " + Location + "," + Teacher + ")")
+            cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES ('" + ClassName + "','" +  Description + "', '0', '" +  ClassSize + "', '" + Location + "','" + Teacher + "')")
             conn.commit()
-    return redrect('/manage')
+    return redirect('/manage')
 @app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST' and 'email' in session:

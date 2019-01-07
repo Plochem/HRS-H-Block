@@ -23,10 +23,10 @@
         display: block;
     }
     #header{
-    grid-area: head;
-    padding-top: 2%;
-    padding-left: 2%;
-}
+        grid-area: head;
+        padding-top: 2%;
+        padding-left: 2%;
+    }
     #log{
         grid-area:log;    
         text-align: right;
@@ -50,7 +50,6 @@
             <a href="/logout">LOGOUT</a>
             <br>{{ email }}
         </div>
-        <!--Each row has multiple columns. row[0] accesses the first column of that row-->
         <p id = "msg">{{ message }}</p>
         <div id="classes">
         {% for id in range(classes | length) %}
@@ -61,17 +60,14 @@
                     <span class='courseStatus'>Students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
                     <p> Location: {{ classes[id][5] }} </p>
                 </div>
-            <!---{% for col in classes[id]%}
-                    <span> Class" {{ col }} | </span>
-            {% endfor %}-->
             
             {% if email in classes[id] %}
             <form action="/classes" method="post" role="form">
-                <button type="submit" name = "class_id_cancel" value = {{ id }}>Cancel</button>
+                <button type="submit" name = "class_id_cancel" value = {{ id + 1}}>Cancel</button>
             </form>
             {% else %}
             <form action="/classes" method="post" role="form">
-                <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
+                <button type="submit" name = "class_id" value = {{ id + 1 }}>Sign Up</button>
             </form>
             {% endif %}
             <br>
