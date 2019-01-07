@@ -42,33 +42,46 @@
 </head>
 
 <body>
-    <div id="header">
-        <img src="../static/HRlogo.jpg" alt = "oof"/>
-    </div>
-    <div id="log">
-        <a href="/logout">LOGOUT</a>
-        <br>
-        {{ email }}
-    </div>
-    <!--Each row has multiple columns. row[0] accesses the first column of that row-->
-    <ul id="classes">
-        <span id = "msg">{{ message }}</span>
-    {% for id in range(classes | length) %}
-        <li>
-
-            <div class='course'>
-                <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
-                <span class='courseDescription'>COURSE DESCRIPTION</span>
-            </div>
-        <!---{% for col in classes[id]%}
-                <span> Class" {{ col }} | </span>
-        {% endfor %}-->
-        </li>
-        <form action="/classes" method="post" role="form">
-            <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
-        </form>
-        <br>
-    {% endfor %}
-    </ul>
+        <p>list classes</p>
+        <p>{{ email }}</p>
+        <a href="/logout">LOGOUT</a><br>
+        <div id="header">
+            <img src="../static/HRlogo.jpg" alt = "oof"/>
+        </div>
+        <div id="log">
+            <a href="/logout">LOGOUT</a>
+            <br>
+            {{ email }}
+        </div>
+        <!--Each row has multiple columns. row[0] accesses the first column of that row-->
+        <p id = "msg">{{ message }}</p>
+        <ul>
+        <ul id="classes">
+            <span id = "msg">{{ message }}</span>
+        {% for id in range(classes | length) %}
+            <li>
+                <div class='course'>        
+                    <span class='courseTitle'> Class: {{ classes[id][1] }} </span> 
+                    <span class='courseDescription'>Description: {{ classes[id][2] }}</span><br>
+                    <span class='courseStatus'>Students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
+                    <p> Location: {{ classes[id][5] }} </p>
+                    <span class='courseDescription'>COURSE DESCRIPTION</span>
+                </div>
+            <!---{% for col in classes[id]%}
+                    <span> Class" {{ col }} | </span>
+            {% endfor %}-->
+            </li>
+            {% if email in classes[id] %}
+            <form action="/classes" method="post" role="form">
+                <button type="submit" name = "class_id_cancel" value = {{ id }}>Cancel</button>
+            </form>
+            {% else %}
+            <form action="/classes" method="post" role="form">
+                <button type="submit" name = "class_id" value = {{ id }}>Sign Up</button>
+            </form>
+            {% endif %}
+            <br>
+        {% endfor %}     
+        </ul>
 </body>
 </html>
