@@ -14,6 +14,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
 app.config['MYSQL_DATABASE_DB'] = 'sys'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
+linkedlist = LinkedList()
 
 
 @app.errorhandler(404)
@@ -29,11 +30,6 @@ def method_not_allowed(e):
 @app.route('/')
 #O(1) 
 def home(): # home page
-    linkedlist = LinkedList()
-    linkedlist.add(node(None, None, "yeet"))
-    linkedlist.add(node(None, None, "yote"))
-    linkedlist.add(node(None, None, "yote3432"))
-    linkedlist.prnt()
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
@@ -47,11 +43,13 @@ def login():
         if email == 'root' and password == 'pass': # make it check with DB
             session.permanent = True
             session['email'] = email
+            linkedlist.add(node(None, None, email))
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
             session.permanent = True
             session['email'] = email
             session['admin'] = True
+            linkedlist.add(node(None, None, email))
             return redirect('/manage')
         else:
             message = "Wrong username or password"
@@ -65,6 +63,7 @@ def classes():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM sys.classes")
         data = cursor.fetchall()
+        linkedlist.prnt()
         return render_template('classes.html', email = session['email'], classes = data)
     else:
         return render_template('error.html')
@@ -193,6 +192,7 @@ def signup():
 @app.route('/logout')
 #O(1)
 def logout():
+    linkedlist.remove(session['email'])
     session.pop('email', None) # deletes current session
     session.pop('admin', None)
     return redirect('/')
