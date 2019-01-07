@@ -29,6 +29,7 @@
 }
     #log{
         grid-area:log;    
+        text-align: right;
     }
     #classes{
         grid-area: cl;
@@ -47,14 +48,13 @@
         </div>
         <div id="log">
             <a href="/logout">LOGOUT</a>
-            <p>{{ email }}</p>
+            <br>{{ email }}
         </div>
         <!--Each row has multiple columns. row[0] accesses the first column of that row-->
         <p id = "msg">{{ message }}</p>
-        <ul>
-        <ul id="classes">
+        <div id="classes">
         {% for id in range(classes | length) %}
-            <li>
+            
                 <div class='course'>        
                     <span class='courseTitle'> Class: {{ classes[id][1] }} </span> 
                     <span class='courseDescription'>Description: {{ classes[id][2] }}</span><br>
@@ -64,7 +64,7 @@
             <!---{% for col in classes[id]%}
                     <span> Class" {{ col }} | </span>
             {% endfor %}-->
-            </li>
+            
             {% if email in classes[id] %}
             <form action="/classes" method="post" role="form">
                 <button type="submit" name = "class_id_cancel" value = {{ id }}>Cancel</button>
@@ -76,6 +76,6 @@
             {% endif %}
             <br>
         {% endfor %}     
-        </ul>
+        </div>
 </body>
 </html>
