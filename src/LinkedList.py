@@ -4,6 +4,8 @@ class LinkedList(object):
     head = None
     tail = None
     size = 0
+
+    #O(1)
     def add(self, node):
         '''
         Adds a node to the chain
@@ -16,6 +18,7 @@ class LinkedList(object):
             self.tail.next = node
             self.tail = node
         self.size+=1
+    #O(n)
     def remove(self, email):
         '''
         Remove a node based off of the email/username
@@ -32,6 +35,7 @@ class LinkedList(object):
                 currNode = next
             else :
                 currNode = currNode.next
+    #O(n)
     def prnt(self):
         currNode = self.head
         while currNode is not None: 
