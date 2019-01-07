@@ -21,15 +21,16 @@ class LinkedList(object):
         Remove a node based off of the email/username
         '''
         currNode = self.head
-        while currNode.next is not None: 
+        while currNode is not None:
+            print("yo")
             if currNode.email is email:
                 currNode.previous.next = currNode.next
-                currNode.next,previous = currNode.previous
+                currNode.next.previous = currNode.previous
             else :
-                currNode = currNode.next
+                currNode = currNode.next.next
     def prnt(self):
         currNode = self.head
-        while currNode.next is not None: 
+        while currNode is not None: 
             print(currNode.email)
             currNode = currNode.next
     pass
