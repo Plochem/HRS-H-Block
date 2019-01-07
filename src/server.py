@@ -11,7 +11,6 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
 app.config['MYSQL_DATABASE_DB'] = 'sys'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 mysql.init_app(app)
 
 
