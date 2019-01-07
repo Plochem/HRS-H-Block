@@ -66,8 +66,7 @@ def add_class():
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM sys.classes")
             data = cursor.fetchall()
-            return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;Welcome to the admin page!/b>"
-            #return render_template('manageClasses.html',data = data)
+            return render_template('manage.html',data = data)
             #admins should be able to view classes and add/remove classes from this page
         else:
             return redirect('/classes')
