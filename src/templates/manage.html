@@ -12,7 +12,7 @@
         display: grid;
         grid-template-areas: 
         "head mid log"
-        "cl cl cl";
+        "cl fm fm";
         grid-template-columns: 40% 40% 20%;
     }
     #header{
@@ -21,9 +21,15 @@
     padding-left: 2%;
 }
     #log{
-        grid-area:log;    
+        grid-area:log;
+        text-align: right;    
     }
-
+    .course{
+        grid-area: cl;
+    }
+    form{
+        grid-area: fm;
+    }
     </style>
 </head>
 
@@ -37,24 +43,23 @@
     </div>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
     <p id = "msg">{{ message }}</p>
-    <ul>
+
     {% for id in range(classes | length) %}
-        <li>
-            <div class='course'>
-                <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
-                <span class='courseStatus'>Number of students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
-                <p> Location: {{ classes[id][5] }} </p>
-                <p>Names:</p>
-                {% for col in range(7, classes[id] | length) %}
-                <div class='students'>
-                    <span class='name'> {{classes[id][col]}} </span>
-                </div>
-                {% endfor %}
+        
+        <div class='course'>
+            <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
+            <span class='courseStatus'>Number of students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
+            <p> Location: {{ classes[id][5] }} </p>
+            <p>Names:</p>
+            {% for col in range(7, classes[id] | length) %}
+            <div class='students'>
+                <span class='name'> {{classes[id][col]}} </span>
             </div>
-        </li>
-        <br>
+            {% endfor %}
+        </div>
+        
     {% endfor %}
-    </ul>
+    
     <form action="/manage" method="post" role="form">
         <label for="className">Class Name</label>
         <br>
