@@ -29,6 +29,8 @@ def home(): # home page
     linkedlist = LinkedList()
     linkedlist.add(node(None, None, "yeet"))
     linkedlist.add(node(None, None, "yote"))
+    linkedlist.add(node(None, None, "yote3432"))
+    linkedlist.remove("yote")
     linkedlist.prnt()
     return render_template('login.html')
 
