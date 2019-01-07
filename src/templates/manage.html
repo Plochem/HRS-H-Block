@@ -53,8 +53,6 @@
         <br> {{ email }}
     </div>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
-    <p id = "msg">{{ message }}</p>
-
     <!--O(n)-->
     {% for id in range(classes | length) %}
         
@@ -94,6 +92,7 @@
         <input type="text" id="teacher" name="teacher" required>
         <br>
         <button type="submit">Add Class</button>
+        <p id = "msg">{{ message }}</p>
     </form>
 </body>
 </html>
