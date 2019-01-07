@@ -35,14 +35,11 @@
         <a href="/logout">LOGOUT</a>
         <br> {{ email }}
     </div>
-    <p>list classes</p>
-    <p>{{ email }}</p>
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
     <p id = "msg">{{ message }}</p>
     <ul>
     {% for id in range(classes | length) %}
         <li>
-
             <div class='course'>
                 <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
                 <span class='courseStatus'>Number of students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
