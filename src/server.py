@@ -11,7 +11,6 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
 app.config['MYSQL_DATABASE_DB'] = 'sys'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes=5)
 mysql.init_app(app)
 
 
@@ -66,7 +65,7 @@ def add_class():
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM sys.classes")
             data = cursor.fetchall()
-            return render_template('manage.html',data = data)
+            return render_template('manage.html', email = session['email'], classes = data)
             #admins should be able to view classes and add/remove classes from this page
         else:
             return redirect('/classes')
