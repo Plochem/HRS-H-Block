@@ -27,7 +27,11 @@ class LinkedList(object):
                 currNode.next,previous = currNode.previous
             else :
                 currNode = currNode.next
-
+    def prnt(self):
+        currNode = head
+        while currNode.next is not None: 
+            print(currNode.email)
+            currNode = currNode.next
     pass
 
 
