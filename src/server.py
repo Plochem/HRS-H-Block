@@ -188,3 +188,5 @@ if __name__ == '__main__':
     cursor.execute("CREATE TABLE IF NOT EXISTS `sys`.`classes` (`id` INT NOT NULL AUTO_INCREMENT,`name` VARCHAR(45) NULL,`description` VARCHAR(100) NULL,`numSignedUp` INT NULL,`maxCapacity` INT NULL, `location` VARCHAR(50) NULL, `teacher1` VARCHAR(50) NULL,`student1` VARCHAR(50) NULL, PRIMARY KEY (`id`))")
     cursor.execute("CREATE TABLE IF NOT EXISTS `sys`.`users` (`id` INT NOT NULL,`email` VARCHAR(45) NULL,`password` VARCHAR(100) NULL, `classSignedUp` VARCHAR(45) NULL, PRIMARY KEY (`id`))")
     conn.commit()
+    linkedlist = LinkedList()
+    linkedlist.add(node(None, None, "yeet"))
