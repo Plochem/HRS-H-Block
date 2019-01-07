@@ -58,7 +58,7 @@ def classes():
         return render_template('error.html')
 
 @app.route('/manage')#todo: allow admin to add classes to the database
-def add_class():
+def Admin_Page():
     if 'admin' in session and 'email' in session:
         if session['admin'] is True:
             conn = mysql.connect()
@@ -71,7 +71,20 @@ def add_class():
             return redirect('/classes')
     else:
         return render_template('error.html')
-
+@app.route('/manage', methods = ['POST'])
+def manage():
+    if session['admin'] is True:
+        if request.method == 'POST':
+            ClassName = request.form.get('className')
+            Description = request.form.get('desc')
+            ClassSize = request.form.get('classSize')
+            Location = request.form.get('location')
+            Teacher = request.form.get('teacher')
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES (" + ClassName + "," +  Description + ", '0', " +  ClassSize + ", " + Location + "," + Teacher)")
+            conn.commit()
+    return redrect('/manage')
 @app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST' and 'email' in session:
