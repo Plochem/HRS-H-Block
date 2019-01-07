@@ -65,12 +65,8 @@ def add_class():
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM sys.classes")
             data = cursor.fetchall()
-<<<<<<< HEAD
             return render_template('manage.html', email = session['email'], classes = data)
             #admins should be able to view classes and add/remove classes from this page
-=======
-            return render_template('manage.html',data = data)
->>>>>>> 53ed75c247afe4113aac773c5e6ad73904179965
         else:
             return redirect('/classes')
     else:
