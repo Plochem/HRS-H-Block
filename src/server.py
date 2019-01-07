@@ -100,8 +100,9 @@ def manage():
             cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES ('" + ClassName + "','" +  Description + "', '0', '" +  ClassSize + "', '" + Location + "','" + Teacher + "')")
             conn.commit()
     return redirect('/manage')
-    
+
 @app.route('/classes', methods=['POST'])
+#O(n)
 def signup():
     if request.method == 'POST' and 'email' in session:
         classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID, but does that really matter b/c they will just sign up for another class
@@ -190,11 +191,13 @@ def signup():
         return render_template('error.html')
 
 @app.route('/logout')
+#O(1)
 def logout():
     session.pop('email', None) # deletes current session
     session.pop('admin', None)
     return redirect('/')
- 
+
+#O(1)
 if __name__ == '__main__':
     app.run(debug=True)
     conn = mysql.connect()
