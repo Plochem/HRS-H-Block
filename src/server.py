@@ -190,3 +190,5 @@ if __name__ == '__main__':
     conn.commit()
     linkedlist = LinkedList()
     linkedlist.add(node(None, None, "yeet"))
+    linkedlist.add(node(None, None, "yote"))
+    linkedlist.prnt()
