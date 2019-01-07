@@ -14,27 +14,26 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'pass'
 app.config['MYSQL_DATABASE_DB'] = 'sys'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
+linkedlist = LinkedList()
 
 
 @app.errorhandler(404)
+#O(1) 
 def page_not_found(e):
     return "<img src='https://ih1.redbubble.net/image.394584645.5749/ap,550x550,12x12,1,transparent,t.u4.png'><br><b>page&nbsp;doesn't exist</b>"
 
 @app.errorhandler(405)
+#O(1) 
 def method_not_allowed(e):
     return redirect('/')
- 
+
 @app.route('/')
+#O(1) 
 def home(): # home page
-    linkedlist = LinkedList()
-    linkedlist.add(node(None, None, "yeet"))
-    linkedlist.add(node(None, None, "yote"))
-    linkedlist.add(node(None, None, "yote3432"))
-    linkedlist.remove("yote")
-    linkedlist.prnt()
     return render_template('login.html')
 
 @app.route('/', methods=['POST'])
+#O(1)
 def login():
     message = ''
     if request.method == 'POST':
@@ -44,28 +43,33 @@ def login():
         if email == 'root' and password == 'pass': # make it check with DB
             session.permanent = True
             session['email'] = email
+            linkedlist.add(node(None, None, email))
             return redirect('/classes') 
         if email == 'admin' and password == 'admin':
             session.permanent = True
             session['email'] = email
             session['admin'] = True
+            linkedlist.add(node(None, None, email))
             return redirect('/manage')
         else:
             message = "Wrong username or password"
     return render_template('login.html', message=message)
 
 @app.route('/classes')
+#O(1)
 def classes():
     if 'email' in session: # checks if session exists (user is logged in)
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM sys.classes")
         data = cursor.fetchall()
+        linkedlist.prnt()
         return render_template('classes.html', email = session['email'], classes = data)
     else:
         return render_template('error.html')
 
 @app.route('/manage')#todo: allow admin to add classes to the database
+#O(1) 
 def Admin_Page():
     if 'admin' in session and 'email' in session:
         if session['admin'] is True:
@@ -79,7 +83,9 @@ def Admin_Page():
             return redirect('/classes')
     else:
         return render_template('error.html')
+
 @app.route('/manage', methods = ['POST'])
+#O(1) 
 def manage():
     if session['admin'] is True:
         if request.method == 'POST':
@@ -93,7 +99,9 @@ def manage():
             cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES ('" + ClassName + "','" +  Description + "', '0', '" +  ClassSize + "', '" + Location + "','" + Teacher + "')")
             conn.commit()
     return redirect('/manage')
+
 @app.route('/classes', methods=['POST'])
+#O(n)
 def signup():
     if request.method == 'POST' and 'email' in session:
         classID = request.form.get('class_id') # if someone inspects element, they can change the val of button which will affect the classID, but does that really matter b/c they will just sign up for another class
@@ -182,11 +190,14 @@ def signup():
         return render_template('error.html')
 
 @app.route('/logout')
+#O(1)
 def logout():
+    linkedlist.remove(session['email'])
     session.pop('email', None) # deletes current session
     session.pop('admin', None)
     return redirect('/')
- 
+
+#O(1)
 if __name__ == '__main__':
     app.run(debug=True)
     conn = mysql.connect()
