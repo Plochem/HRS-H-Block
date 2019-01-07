@@ -22,12 +22,16 @@ class LinkedList(object):
         '''
         currNode = self.head
         while currNode is not None:
-            print("yo")
             if currNode.email is email:
-                currNode.previous.next = currNode.next
-                currNode.next.previous = currNode.previous
+                next = currNode.next
+                previous = currNode.previous
+                previous.next = next
+                next.previous = previous
+                currNode.next = None
+                currNode.previous = None
+                currNode = next
             else :
-                currNode = currNode.next.next
+                currNode = currNode.next
     def prnt(self):
         currNode = self.head
         while currNode is not None: 
