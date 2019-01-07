@@ -30,7 +30,6 @@ def home(): # home page
     linkedlist.add(node(None, None, "yeet"))
     linkedlist.add(node(None, None, "yote"))
     linkedlist.add(node(None, None, "yote3432"))
-    linkedlist.remove("yote")
     linkedlist.prnt()
     return render_template('login.html')
 
@@ -79,6 +78,7 @@ def Admin_Page():
             return redirect('/classes')
     else:
         return render_template('error.html')
+
 @app.route('/manage', methods = ['POST'])
 def manage():
     if session['admin'] is True:
@@ -93,6 +93,7 @@ def manage():
             cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES ('" + ClassName + "','" +  Description + "', '0', '" +  ClassSize + "', '" + Location + "','" + Teacher + "')")
             conn.commit()
     return redirect('/manage')
+    
 @app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST' and 'email' in session:
