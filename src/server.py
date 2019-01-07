@@ -82,9 +82,9 @@ def manage():
             Teacher = request.form.get('teacher')
             conn = mysql.connect()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES (" + ClassName + "," +  Description + ", '0', " +  ClassSize + ", " + Location + "," + Teacher + ")")
+            cursor.execute("INSERT INTO sys.classes (name, description, numSignedUp, maxCapacity, location, teacher1) VALUES ('" + ClassName + "','" +  Description + "', '0', '" +  ClassSize + "', '" + Location + "','" + Teacher + "')")
             conn.commit()
-    return redrect('/manage')
+    return redirect('/manage')
 @app.route('/classes', methods=['POST'])
 def signup():
     if request.method == 'POST' and 'email' in session:
