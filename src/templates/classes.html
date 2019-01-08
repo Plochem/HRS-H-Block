@@ -14,7 +14,7 @@
         "cl cl";
         grid-template-columns: 50% 50%;
     }
-    .course{
+    div.course{
         border: solid black 2px; 
         border-spacing: 2%;
         width: 50%;
@@ -58,6 +58,7 @@
         </div>
         <p id = "msg">{{ message }}</p>
         <div id="classes">
+            <p style="font-size: 2em"> H Block Class Signups: </p>
             <!--O(n)-->
         {% for id in range(classes | length) %}
             
