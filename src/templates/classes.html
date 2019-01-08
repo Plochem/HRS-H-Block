@@ -10,14 +10,18 @@
     body{
         display: grid;
         grid-template-areas: 
-        "head mid log"
-        "cl cl cd";
-        grid-template-columns: 40% 40% 20%;
+        "head log"
+        "cl cl";
+        grid-template-columns: 50% 50%;
+    }
+    .course{
+        border: solid black 2px; 
+        border-spacing: 2%;
+        width: 50%;
     }
     span.courseDescription{
-        grid-area: cd;
         display: none;
-        position:absolute;
+        position:relative;
     }
     div.course:hover > span.courseDescription{
         display: block;
@@ -58,21 +62,20 @@
         {% for id in range(classes | length) %}
             
                 <div class='course'>        
-                    <span class='courseTitle'> Class: {{ classes[id][1] }} </span> 
-                    <span class='courseDescription'>Description: {{ classes[id][2] }}</span><br>
+                    <span class='courseTitle'> Class: {{ classes[id][1] }} </span> <br>
                     <span class='courseStatus'>Students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span><br>
-                    <span class='courseLocation'> Location: {{ classes[id][5] }} </span>
+                    <span class='courseLocation'> Location: {{ classes[id][5] }} </span> <br>
+                    <span class='courseDescription'>Description: {{ classes[id][2] }}</span>
+                    {% if email in classes[id] %}
+                    <form action="/classes" method="post" role="form">
+                        <button type="submit" name = "class_id_cancel" value = {{ id + 1}}>Cancel</button>
+                    </form>
+                    {% else %}
+                    <form action="/classes" method="post" role="form">
+                        <button type="submit" name = "class_id" value = {{ id + 1 }}>Sign Up</button>
+                    </form>
+                    {% endif %}
                 </div>
-            
-            {% if email in classes[id] %}
-            <form action="/classes" method="post" role="form">
-                <button type="submit" name = "class_id_cancel" value = {{ id + 1}}>Cancel</button>
-            </form>
-            {% else %}
-            <form action="/classes" method="post" role="form">
-                <button type="submit" name = "class_id" value = {{ id + 1 }}>Sign Up</button>
-            </form>
-            {% endif %}
             <br>
         {% endfor %}     
         </div>
