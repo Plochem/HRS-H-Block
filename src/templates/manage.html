@@ -27,6 +27,10 @@
     a{
         text-decoration: none;
     }
+    .course{
+        border: solid black 2px; 
+        border-spacing: 2%;
+    }
     div#classes{
         grid-area: cl;
     }
@@ -62,8 +66,8 @@
         <div class='course'>
             <span class='courseTitle'> Class: {{ classes[id][1] }} </span>
             <span class='courseStatus'>Number of students signed up: {{ classes[id][3] }} / {{ classes[id][4] }}</span>
-            <p> Location: {{ classes[id][5] }} </p>
-            <p>Names:</p>
+            <span> Location: {{ classes[id][5] }} </span>
+            <span>Names:</span>
             {% for col in range(7, classes[id] | length) %}
             <div class='students'>
                 <span class='name'> {{classes[id][col]}} </span>
