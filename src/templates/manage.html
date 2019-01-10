@@ -27,7 +27,7 @@
     a{
         text-decoration: none;
     }
-    .course{
+    div#classes{
         grid-area: cl;
     }
     form{
@@ -54,6 +54,7 @@
         <a href="/logout">LOGOUT</a>
         <br> {{ email }}
     </div>
+    <div id="classes">
     <!--Each row has multiple columns. row[0] accesses the first column of that row-->
     <!--O(n)-->
     {% for id in range(classes | length) %}
@@ -71,7 +72,7 @@
         </div>
         
     {% endfor %}
-    
+    </div>
     <form action="/manage" method="post" role="form">
         <p id = "msg">{{ message }}</p>
         <label for="className">Class Name</label>
