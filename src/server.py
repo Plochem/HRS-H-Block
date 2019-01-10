@@ -83,7 +83,7 @@ def Admin_Page():
             return redirect('/classes')
     else:
         return render_template('error.html')
-#we still need to be able to remove classes
+
 @app.route('/manage', methods = ['POST'])
 #O(1) 
 def manage():
